@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ngedit Blocks</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1 class="logo" aria-label="NGEDIT"><span style="color:#b000f0">N</span><span style="color:#00e8e8">G</span><span style="color:#f8d800">E</span><span style="color:#00e800">D</span><span style="color:#4d7cff">I</span><span style="color:#f00000">T</span></h1>
+    <div class="logo-row" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  </header>
+
+  <main>
+    <section class="side">
+      <div class="box">
+        <div class="label">HOLD</div>
+        <canvas id="hold" width="96" height="56"></canvas>
+        <div class="hint">C / Shift</div>
+      </div>
+      <div class="stats">
+        <div><span>Skor</span><strong id="score">0</strong></div>
+        <div><span>Baris</span><strong id="lines">0</strong></div>
+        <div><span>Level</span><strong id="level">1</strong></div>
+        <div><span>Terbaik</span><strong id="best">0</strong></div>
+        <div><span>Waktu</span><strong id="time">00:00</strong></div>
+        <div><span>Kombo</span><strong id="combo">-</strong></div>
+        <div><span id="b2b" class="badge">-</span></div>
+      </div>
+    </section>
+
+    <section class="board-wrap">
+      <canvas id="board" width="300" height="600" tabindex="0"></canvas>
+      <div id="overlay" class="overlay">
+        <div id="overlayTitle">Ngedit Blocks</div>
+        <div id="overlayText"></div>
+      </div>
+      <div id="message"></div>
+    </section>
+
+    <section class="side">
+      <div class="box">
+        <div class="label">NEXT</div>
+        <canvas id="next" width="96" height="280"></canvas>
+      </div>
+      <div class="box settings">
+        <div class="label">HANDLING</div>
+        <label>DAS (ms) <input id="dasInput" type="number" min="0" max="500" step="1"></label>
+        <label>ARR (ms) <input id="arrInput" type="number" min="0" max="200" step="1"></label>
+      </div>
+    </section>
+  </main>
+
+  <div class="buttons">
+    <button id="startBtn" tabindex="-1">Start</button>
+    <button id="pauseBtn" tabindex="-1">Pause (P)</button>
+    <button id="restartBtn" tabindex="-1">Restart (R)</button>
+    <button id="soundBtn" tabindex="-1">SFX: ON</button>
+    <button id="bgmBtn" tabindex="-1">BGM: OFF</button>
+    <button id="helpBtn" tabindex="-1" title="Kontrol">?</button>
+  </div>
+</div>
+<script src="js/engine.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

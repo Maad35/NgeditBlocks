@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest Version="7.0" ExtensionBundleId="com.maad.ngeditblocks" ExtensionBundleVersion="2.0.0" ExtensionBundleName="Ngedit Blocks" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ExtensionList><Extension Id="com.maad.ngeditblocks.panel" Version="2.0.0"/></ExtensionList>
+  <ExecutionEnvironment>
+    <HostList><Host Name="AEFT" Version="[17.0,99.9]"/></HostList>
+    <LocaleList><Locale Code="All"/></LocaleList>
+    <RequiredRuntimeList><RequiredRuntime Name="CSXS" Version="10.0"/></RequiredRuntimeList>
+  </ExecutionEnvironment>
+  <DispatchInfoList><Extension Id="com.maad.ngeditblocks.panel"><DispatchInfo>
+    <Resources><MainPath>./index.html</MainPath></Resources>
+    <Lifecycle><AutoVisible>true</AutoVisible></Lifecycle>
+    <UI><Type>Panel</Type><Menu>Ngedit Blocks</Menu><Geometry><Size><Width>580</Width><Height>760</Height></Size><MinSize><Width>280</Width><Height>400</Height></MinSize><MaxSize><Width>900</Width><Height>1000</Height></MaxSize></Geometry></UI>
+  </DispatchInfo></Extension></DispatchInfoList>
+</ExtensionManifest>
