@@ -29,6 +29,7 @@
   var pauseBtn = document.getElementById('pauseBtn');
   var restartBtn = document.getElementById('restartBtn');
   var soundBtn = document.getElementById('soundBtn');
+  var themeBtn = document.getElementById('themeBtn');
   var bgmBtn = document.getElementById('bgmBtn');
   var helpBtn = document.getElementById('helpBtn');
   var dasInput = document.getElementById('dasInput');
@@ -38,6 +39,7 @@
   var running = false;
   var paused = false;
   var soundOn = true;
+  var sfxTheme = 'lembut';
   var bgmOn = false;
   var dasMs = 133;
   var arrMs = 33;
@@ -51,12 +53,14 @@
     if (saved.das) dasMs = saved.das;
     if (saved.arr) arrMs = saved.arr;
     if (typeof saved.sound === 'boolean') soundOn = saved.sound;
+    if (saved.theme === 'punchy' || saved.theme === 'lembut') sfxTheme = saved.theme;
     if (typeof saved.bgm === 'boolean') bgmOn = saved.bgm;
   } catch (e) { /* localStorage may be unavailable in some CEP builds */ }
 
   dasInput.value = dasMs;
   arrInput.value = arrMs;
   updateSoundButton();
+  updateThemeButton();
   updateBgmButton();
 
   // ---- Sound, WebAudio only, no audio files ----
@@ -112,8 +116,18 @@
   // Tema Lembut (v1.0.8): tidak ada lagi gelombang square. Kunci biasa jadi
   // debuk lembut (sweep sine turun), clear 4 baris jadi chime sine, dan
   // game over jadi nada sine turun yang pelan.
+  // Tema Punchy (v2.0.2): lock jadi debuk rendah yang keras, clear/quad/T-spin
+  // jadi chime square yang lebih terang, pendek, dan keras. Lembut tetap default.
   function soundForEvent(ev) {
     if (!ev) return;
+    if (sfxTheme === 'punchy') {
+      if (ev.gameOver) { beep(200, 0.12, 'triangle', 0.10, 0); beep(140, 0.12, 'triangle', 0.10, 0.15); beep(90, 0.30, 'triangle', 0.10, 0.3); return; }
+      if (ev.clearKey === 'quad') { sweepBeep(200, 50, 0.08, 'triangle', 0.12); beep(523, 0.08, 'square', 0.08, 0); beep(659, 0.08, 'square', 0.08, 0.07); beep(784, 0.08, 'square', 0.08, 0.14); beep(1046, 0.14, 'square', 0.08, 0.21); return; }
+      if (ev.tspin) { sweepBeep(200, 50, 0.08, 'triangle', 0.12); beep(440, 0.08, 'square', 0.08, 0); beep(880, 0.14, 'square', 0.08, 0.07); return; }
+      if (ev.lines > 0) { sweepBeep(200, 50, 0.08, 'triangle', 0.12); beep(523, 0.08, 'square', 0.08, 0); beep(1046, 0.12, 'square', 0.08, 0.07); return; }
+      sweepBeep(200, 50, 0.08, 'triangle', 0.12);
+      return;
+    }
     if (ev.gameOver) { beep(280, 0.25, 'sine', 0.07, 0); beep(190, 0.25, 'sine', 0.07, 0.2); beep(120, 0.45, 'sine', 0.07, 0.4); return; }
     if (ev.clearKey === 'quad') { beep(523, 0.12, 'sine', 0.07, 0); beep(659, 0.12, 'sine', 0.07, 0.1); beep(784, 0.18, 'sine', 0.07, 0.2); return; }
     if (ev.tspin) { beep(440, 0.12, 'sine', 0.07, 0); beep(660, 0.18, 'sine', 0.07, 0.1); return; }
@@ -635,9 +649,33 @@
     soundBtn.textContent = soundOn ? 'SFX: ON' : 'SFX: OFF';
   }
 
+  function updateThemeButton() {
+    if (themeBtn) themeBtn.textContent = sfxTheme === 'punchy' ? 'Tema: Punchy' : 'Tema: Lembut';
+  }
+
+  function moveSound() {
+    if (sfxTheme === 'punchy') beep(240, 0.03, 'triangle', 0.05, 0);
+    else beep(200, 0.04, 'sine', 0.025, 0);
+  }
+
+  function rotateSound(dir) {
+    if (sfxTheme === 'punchy') {
+      if (dir > 0) sweepBeep(300, 500, 0.06, 'triangle', 0.06);
+      else sweepBeep(500, 300, 0.06, 'triangle', 0.06);
+    } else {
+      if (dir > 0) sweepBeep(360, 440, 0.05, 'sine', 0.035);
+      else sweepBeep(440, 360, 0.05, 'sine', 0.035);
+    }
+  }
+
+  function holdSound() {
+    if (sfxTheme === 'punchy') beep(620, 0.06, 'square', 0.06, 0);
+    else beep(520, 0.08, 'sine', 0.04, 0);
+  }
+
   function saveSettings() {
     try {
-      window.localStorage.setItem('ngeditblocks-settings', JSON.stringify({ das: dasMs, arr: arrMs, sound: soundOn, bgm: bgmOn }));
+      window.localStorage.setItem('ngeditblocks-settings', JSON.stringify({ das: dasMs, arr: arrMs, sound: soundOn, theme: sfxTheme, bgm: bgmOn }));
     } catch (e) {}
   }
 
@@ -657,6 +695,14 @@
     soundOn = !soundOn;
     updateSoundButton();
     saveSettings();
+    boardCanvas.focus();
+  });
+  if (themeBtn) themeBtn.addEventListener('click', function () {
+    ensureAudio();
+    sfxTheme = sfxTheme === 'punchy' ? 'lembut' : 'punchy';
+    updateThemeButton();
+    saveSettings();
+    moveSound();
     boardCanvas.focus();
   });
   if (bgmBtn) bgmBtn.addEventListener('click', function () {
@@ -699,7 +745,7 @@
     keysDown[key] = true;
     if (running && !paused && !engine.gameOver) {
       engine.move(dir);
-      beep(200, 0.04, 'sine', 0.025, 0);
+      moveSound();
     }
     setRepeat(dir, key);
   }
@@ -758,12 +804,12 @@
       case 'ArrowUp':
       case 'KeyX':
       case 'KeyW':
-        if (running && !paused && engine.rotate(1)) sweepBeep(360, 440, 0.05, 'sine', 0.035);
+        if (running && !paused && engine.rotate(1)) rotateSound(1);
         break;
       case 'KeyZ':
       case 'ControlLeft':
       case 'ControlRight':
-        if (running && !paused && engine.rotate(-1)) sweepBeep(440, 360, 0.05, 'sine', 0.035);
+        if (running && !paused && engine.rotate(-1)) rotateSound(-1);
         break;
       case 'Space':
         if (running && !paused) {
@@ -777,7 +823,7 @@
       case 'KeyC':
       case 'ShiftLeft':
       case 'ShiftRight':
-        if (running && !paused && engine.hold()) beep(520, 0.08, 'sine', 0.04, 0);
+        if (running && !paused && engine.hold()) holdSound();
         break;
       case 'KeyP':
         togglePause();

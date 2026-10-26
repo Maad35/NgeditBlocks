@@ -11,12 +11,12 @@ Just for fun.
 - Modern rules: SRS, 7-bag, hold, ghost piece, and T-spin
 - Guideline scoring, Back-to-Back, combo, and Perfect Clear
 - DAS and ARR adjustable in the panel, best score saved automatically
-- Synth SFX and BGM, with separate ON/OFF buttons, BGM default OFF
+- Synth SFX with Lembut and Punchy themes, and BGM, with separate buttons, BGM default OFF
 - Adaptive panel, comfortable to use small or floating
 
 ## Install (Windows)
 
-ZXP path: download `NgeditBlocks-2.0.1.zxp` from this repo, then install
+ZXP path: download `NgeditBlocks-2.0.2.zxp` from this repo, then install
 it with a ZXP Installer. Open After Effects, then Window > Extensions >
 Ngedit Blocks.
 
@@ -45,4 +45,4 @@ If the panel does not appear, check that the folder name is
 `NgeditBlocks`, that PlayerDebugMode is set, then restart AE. If the keys
 do not respond, click the panel area first.
 
-Version: 2.0.1
+Version: 2.0.2
