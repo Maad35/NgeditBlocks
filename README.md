@@ -16,7 +16,7 @@ Just for fun.
 
 ## Install (Windows)
 
-ZXP path: download `NgeditBlocks-2.0.0.zxp` from this repo, then install
+ZXP path: download `NgeditBlocks-2.0.1.zxp` from this repo, then install
 it with a ZXP Installer. Open After Effects, then Window > Extensions >
 Ngedit Blocks.
 
@@ -45,4 +45,4 @@ If the panel does not appear, check that the folder name is
 `NgeditBlocks`, that PlayerDebugMode is set, then restart AE. If the keys
 do not respond, click the panel area first.
 
-Version: 2.0.0
+Version: 2.0.1
